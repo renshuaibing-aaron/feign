@@ -1,16 +1,3 @@
-/**
- * Copyright 2012-2020 The Feign Authors
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
- */
 package feign;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -30,8 +17,12 @@ public interface Retryer extends Cloneable {
 
   class Default implements Retryer {
 
+    //最大重试次数
     private final int maxAttempts;
+    //	初始重试时间间隔，当请求失败后，重试器将会暂停 初始时间间隔(线程 sleep 的方式)后再开始，避免强刷请求，浪费性能
     private final long period;
+    //当请求连续失败时，重试的时间间隔将按照：long interval = (long) (period * Math.pow(1.5, attempt - 1));
+    // 计算，按照等比例方式延长，但是最大间隔时间为 maxPeriod, 设置此值能够避免 重试次数过多的情况下执行周期太长
     private final long maxPeriod;
     int attempt;
     long sleptForMillis;
@@ -52,6 +43,7 @@ public interface Retryer extends Cloneable {
       return System.currentTimeMillis();
     }
 
+    @Override
     public void continueOrPropagate(RetryableException e) {
       if (attempt++ >= maxAttempts) {
         throw e;

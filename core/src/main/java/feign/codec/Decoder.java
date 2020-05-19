@@ -1,16 +1,3 @@
-/**
- * Copyright 2012-2020 The Feign Authors
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
- */
 package feign.codec;
 
 import java.io.IOException;
@@ -66,7 +53,7 @@ public interface Decoder {
    * Decodes an http response into an object corresponding to its
    * {@link java.lang.reflect.Method#getGenericReturnType() generic return type}. If you need to
    * wrap exceptions, please do so via {@link DecodeException}.
-   *
+   * 从Response 中提取Http消息正文，通过接口类声明的返回类型，消息自动装配
    * @param response the response to decode
    * @param type {@link java.lang.reflect.Method#getGenericReturnType() generic return type} of the
    *        method corresponding to this {@code response}.
@@ -82,6 +69,8 @@ public interface Decoder {
 
     @Override
     public Object decode(Response response, Type type) throws IOException {
+
+      System.out.println("【 从Response 中提取Http消息正文，通过接口类声明的返回类型，消息自动装配】");
       if (response.status() == 404 || response.status() == 204)
         return Util.emptyValueOf(type);
       if (response.body() == null)

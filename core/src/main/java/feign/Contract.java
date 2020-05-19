@@ -1,16 +1,3 @@
-/**
- * Copyright 2012-2020 The Feign Authors
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
- */
 package feign;
 
 import static feign.Util.checkState;
@@ -24,6 +11,7 @@ import java.util.regex.Pattern;
 import feign.Request.HttpMethod;
 
 /**
+ * 根据Contract协议规则，解析接口类的注解信息，解析成内部表现
  * Defines what annotations and values are valid on interfaces.
  */
 public interface Contract {
@@ -38,11 +26,13 @@ public interface Contract {
   abstract class BaseContract implements Contract {
 
     /**
+     * 传入接口定义，解析成相应的方法内部元数据表示
      * @param targetType {@link feign.Target#type() type} of the Feign interface.
      * @see #parseAndValidateMetadata(Class)
      */
     @Override
     public List<MethodMetadata> parseAndValidateMetadata(Class<?> targetType) {
+      System.out.println("【Contract传入接口定义，解析成相应的方法内部元数据表示】");
       checkState(targetType.getTypeParameters().length == 0, "Parameterized types unsupported: %s",
           targetType.getSimpleName());
       checkState(targetType.getInterfaces().length <= 1, "Only single inheritance supported: %s",

@@ -1,16 +1,3 @@
-/**
- * Copyright 2012-2020 The Feign Authors
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
- */
 package feign.codec;
 
 import java.lang.reflect.Type;
@@ -69,7 +56,7 @@ public interface Encoder {
 
   /**
    * Converts objects to an appropriate representation in the template.
-   *
+   * 将实体对象转换成Http请求的消息正文中
    * @param object what to encode as the request body.
    * @param bodyType the type the object should be encoded as. {@link #MAP_STRING_WILDCARD}
    *        indicates form encoding.
@@ -85,6 +72,7 @@ public interface Encoder {
 
     @Override
     public void encode(Object object, Type bodyType, RequestTemplate template) {
+      System.out.println("【使用Encoder 将Bean转换成 Http报文正文】");
       if (bodyType == String.class) {
         template.body(object.toString());
       } else if (bodyType == byte[].class) {

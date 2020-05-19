@@ -1,16 +1,3 @@
-/**
- * Copyright 2012-2020 The Feign Authors
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
- */
 package feign;
 
 import static feign.Util.CONTENT_ENCODING;
@@ -48,7 +35,7 @@ public interface Client {
 
   /**
    * Executes a request against its {@link Request#url() url} and returns a response.
-   *
+   *执行Http请求，并返回Response
    * @param request safe to replay.
    * @param options options to apply to this request.
    * @return connected response, {@link Response.Body} is absent or unread.
@@ -100,6 +87,9 @@ public interface Client {
 
     @Override
     public Response execute(Request request, Options options) throws IOException {
+      System.out.println("【调用HttpURLConnection发送Http请求】");
+      //todo   在每次发送请求的时候，都会创建新的HttpURLConnection 链接，这也就是为什么默认情况下Feign的性能很差的原因
+      //怎么优化 使用Apache HttpClient 或者OkHttp3等基于连接池的高性能Http客户端 怎么使用？？
       HttpURLConnection connection = convertAndSend(request, options);
       return convertResponse(connection, request);
     }
